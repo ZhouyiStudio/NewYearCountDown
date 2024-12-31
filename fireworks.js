@@ -5,6 +5,7 @@ window.onload = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
     const fireworks = [];
     const particles = [];
 
@@ -14,33 +15,37 @@ window.onload = function() {
             this.y = y;
             this.age = 0;
             this.maxAge = 60;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
         }
 
         update() {
             this.age++;
             if (this.age < this.maxAge) {
-                particles.push(new Particle(this.x, this.y));
+                for (let i = 0; i < 5; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color));
+                }
             }
         }
 
         draw() {
             if (this.age < this.maxAge) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = 'white';
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
                 ctx.fill();
             }
         }
     }
 
     class Particle {
-        constructor(x, y) {
+        constructor(x, y, color) {
             this.x = x;
             this.y = y;
             this.age = 0;
             this.maxAge = 100;
-            this.velocityX = (Math.random() - 0.5) * 4;
-            this.velocityY = (Math.random() - 0.5) * 4;
+            this.velocityX = (Math.random() - 0.5) * 6;
+            this.velocityY = (Math.random() - 0.5) * 6;
+            this.color = color;
         }
 
         update() {
@@ -53,8 +58,8 @@ window.onload = function() {
         draw() {
             if (this.age < this.maxAge) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 1, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${1 - this.age / this.maxAge})`;
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${parseInt(this.color.slice(1, 3), 16)}, ${parseInt(this.color.slice(3, 5), 16)}, ${parseInt(this.color.slice(5, 7), 16)}, ${1 - this.age / this.maxAge})`;
                 ctx.fill();
             }
         }
@@ -73,7 +78,7 @@ window.onload = function() {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height / 2;
         fireworks.push(new Firework(x, y));
-    }, 1000);
+    }, 500);
 
     loop();
 }
