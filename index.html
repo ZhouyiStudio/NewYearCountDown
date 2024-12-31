@@ -27,7 +27,7 @@
             width: 100px;
             height: 150px;
             text-align: center;
-            transition: transform 0.6s;
+            transition: transform 0.6s, opacity 0.6s;
             transform-style: preserve-3d;
         }
         .flip-card-front, .flip-card-back {
@@ -46,6 +46,10 @@
         .flip-card-back {
             background-color: #555;
             transform: rotateX(180deg);
+        }
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.6s;
         }
     </style>
 </head>
