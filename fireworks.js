@@ -10,10 +10,10 @@ window.onload = function() {
     const particles = [];
 
     class Firework {
-        constructor(x, y, size, isFirst) {
+        constructor(x, y, radius, isFirst) {
             this.x = x;
             this.y = y;
-            this.size = size;
+            this.radius = radius;
             this.age = 0;
             this.maxAge = isFirst ? 100 : 60; // 超大的烟花持续更长时间
             this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -23,7 +23,7 @@ window.onload = function() {
             this.age++;
             if (this.age < this.maxAge) {
                 for (let i = 0; i < 5; i++) {
-                    particles.push(new Particle(this.x, this.y, this.color, this.size));
+                    particles.push(new Particle(this.x, this.y, this.color, this.radius));
                 }
             }
         }
@@ -31,7 +31,7 @@ window.onload = function() {
         draw() {
             if (this.age < this.maxAge) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
             }
@@ -77,17 +77,19 @@ window.onload = function() {
 
     // 超大的烟花
     setTimeout(() => {
-        const x = canvas.width / 2;
-        const y = canvas.height / 2;
-        fireworks.push(new Firework(x, y, 3, true));
+        const x = canvas.width / 2; // 屏幕中心
+        const y = canvas.height / 2; // 屏幕高度的中间
+        const radius = canvas.width * 0.75 / 2; // 半径为屏幕宽度的37.5%
+        fireworks.push(new Firework(x, y, radius, true));
     }, 500);
 
     // 定时器，生成小的烟花
     setInterval(() => {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height / 2;
-        fireworks.push(new Firework(x, y, 1, false));
-    }, 1000);
+        const radius = canvas.width * 0.05; // 小的烟花半径为屏幕宽度的5%
+        fireworks.push(new Firework(x, y, radius, false));
+    }, 2000);
 
     loop();
 }
