@@ -23,11 +23,15 @@ function flipCard(id, newValue) {
 
     if (front.innerText != newValue) {
         back.innerText = newValue;
-        card.querySelector('.flip-card-inner').style.transform = 'rotateX(180deg)';
-
+        card.querySelector('.flip-card-inner').classList.add('hidden');
+        
         setTimeout(() => {
-            front.innerText = newValue;
-            card.querySelector('.flip-card-inner').style.transform = 'rotateX(0deg)';
+            card.querySelector('.flip-card-inner').style.transform = 'rotateX(180deg)';
+            setTimeout(() => {
+                front.innerText = newValue;
+                card.querySelector('.flip-card-inner').style.transform = 'rotateX(0deg)';
+                card.querySelector('.flip-card-inner').classList.remove('hidden');
+            }, 600);
         }, 600);
     }
 }
