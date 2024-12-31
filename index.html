@@ -5,42 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新年倒计时</title>
     <link rel="stylesheet" href="style.css">
+    	<style>
+			* {
+				margin: 0;
+				padding: 0;
+				/* font-family最后加上sans-serif，
+				是为了保证能够调用这个字体族里面的字体，因为大多数计算机里都有这种字体。 */
+				font-family: 'Poppins', sans-serif;
+			}
+
+			body {
+				background:#FFFFFF url(img/bg.jpg);
+				/* background-attachment属性
+				设置背景图像是否固定或者随着页面的其余部分滚动。
+				 fixed背景图片不会随着页面的滚动而滚动*/
+				background-attachment: fixed;
+				/* background-blend-mode属性
+				 background-blend-mode 属性定义了背景层的混合模式（图片与颜色）
+				 hard-light强光
+				 */
+				background-blend-mode: hard-light;
+			}
+
+			.container {
+				position: absolute;
+				top: 80px;
+				left: 100px;
+				right: 100px;
+				bottom: 80px;
+				background:url(img/bg.jpg);
+				background-attachment: fixed;
+				/* flex弹性布局 */
+				display: flex;
+				/* justify-content
+				属性定义了项目在主轴上的对齐方式。
+				 center： 居中*/
+				justify-content: center;
+				/* align-items属性
+				定义项目在交叉轴上如何对齐。
+				center：交叉轴的中点对齐。*/
+				align-items: center;
+				/* flex-direction属性
+				决定主轴的方向（即项目的排列方向）。
+				 column：主轴为垂直方向，起点在上沿。*/
+				flex-direction: column;
+				/* 阴影 */
+				box-shadow: 0 50px 50px rgba(0, 0, 0, 0.5), 0 0 0 100px rgba(0, 0, 0, .1);
+			}
+
+			.container h2 {
+				text-align: center;
+				font-size: 10em;
+				line-height: 0.7em;
+				color: #333;
+				margin-top: -80px;
+			}
+
+			.container h2 span {
+				display: block;
+				font-weight: 300;
+				/* etter-spacing 属性增加或减少字符间的空白（字符间距）。 */
+				letter-spacing: 6px;
+				font-size: 0.2em;
+
+			}
+
+			.Countdown {
+				display: flex;
+				margin-top: 50px;
+			}
+
+			.Countdown div {
+				position: relative;
+				width: 100px;
+				height: 100px;
+				line-height: 100px;
+				text-align: center;
+				background: #333;
+				color: #fff;
+				margin: 0 15px;
+				font-size: 3em;
+				font-weight: 500;
+			}
+			/* 伪元素 */
+			/* ::before伪元素可用于在元素内容之前插入一些内容。 */
+			/* 小知识可以利用伪元素清除浮动 
+				.clearfix::after{
+					content: "";
+					display: block;
+					clear: both;
+				}
+			*/
+			.Countdown div::before{
+				content:'' ;
+				position: absolute;
+				bottom: -30px;
+				left: 0;
+				width: 100%;
+				height: 35px;
+				background: #ff0;
+				color: #333;
+				font-size: 0.35em;
+				line-height: 35px;
+				font-weight: 300;
+			}
+			.Countdown #day::before{
+				content: 'Days';
+			}
+			.Countdown #hour::before{
+				content: 'Hours';
+			}
+			.Countdown #minute::before{
+				content: 'Minutes';
+			}
+			.Countdown #second::before{
+				content: 'Seconds';
+			}
+			
+		</style>
+
 </head>
 <body>
-    <div class="container">
-        <h1>距离新年还有：</h1>
-        <div class="countdown">
-            <div class="flip-card" id="days">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" id="days-front">0</div>
-                    <div class="flip-card-back" id="days-back">0</div>
-                </div>
-                <div class="label">天</div>
-            </div>
-            <div class="flip-card" id="hours">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" id="hours-front">0</div>
-                    <div class="flip-card-back" id="hours-back">0</div>
-                </div>
-                <div class="label">小时</div>
-            </div>
-            <div class="flip-card" id="minutes">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" id="minutes-front">0</div>
-                    <div class="flip-card-back" id="minutes-back">0</div>
-                </div>
-                <div class="label">分钟</div>
-            </div>
-            <div class="flip-card" id="seconds">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" id="seconds-front">0</div>
-                    <div class="flip-card-back" id="seconds-back">0</div>
-                </div>
-                <div class="label">秒</div>
-            </div>
-        </div>
-    </div>
-    <canvas class="fireworks" id="fireworks"></canvas>
-    <script src="countdown.js"></script>
-</body>
+		<div class="container">
+			<h2><span>Countdown to New Year</span><i id="year">NA</i></h2>
+
+			<div class="Countdown">
+				<div id="day">NA</div>
+				<div id="hour">NA</div>
+				<div id="minute">NA</div>
+				<div id="second">NA</div>
+			</div>
+		</div>
+	</body>
+<script type="text/javascript">
+		//Date对象用于处理日期和时间。
+		//可以通过new关键词定义Date对象。
+		//new Date('月 日,年 时:分:秒')
+		//getTime()返回从1970年1月1日至今的毫秒数
+		//getFullYear获取四位数的年
+			var y = new Date().getFullYear()+1;
+			console.log(y);
+		//字符串拼接，强制类型转换
+			var countDate= new Date('Jan 1,'+y+' 00:00:00').getTime();
+			function newYear(){
+		//new Date()为当前时间
+				var now =new Date().getTime();
+				var gap = countDate-now;
+		//时间格式化
+				var second =1000;
+				var minute = second*60;
+				var hour = minute*60;
+				var day= hour*24;
+		//Math.floor(x)返回小于x的最大整数
+				var d=Math.floor(gap/(day));
+				var h=Math.floor((gap%(day))/(hour));
+				var m=Math.floor((gap%(hour))/(minute));
+				var s=Math.floor((gap%(minute))/second);
+		//innerHTML返回的是标签内的 html内容，包含html标签。
+		//innerText返回的是标签内的文本值，不包含html标签。
+				document.getElementById("day").innerText=d;
+				document.getElementById("hour").innerText=h;
+				document.getElementById("minute").innerText=m;
+				document.getElementById("second").innerText=s;
+				document.getElementById("year").innerText=y;
+			}
+			setInterval(function(){
+				newYear()
+			},1000)
+		</script>
+
 </html>
