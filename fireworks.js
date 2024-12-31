@@ -10,11 +10,12 @@ window.onload = function() {
     const particles = [];
 
     class Firework {
-        constructor(x, y) {
+        constructor(x, y, size, isFirst) {
             this.x = x;
             this.y = y;
+            this.size = size;
             this.age = 0;
-            this.maxAge = 60;
+            this.maxAge = isFirst ? 100 : 60; // 超大的烟花持续更长时间
             this.color = colors[Math.floor(Math.random() * colors.length)];
         }
 
@@ -22,7 +23,7 @@ window.onload = function() {
             this.age++;
             if (this.age < this.maxAge) {
                 for (let i = 0; i < 5; i++) {
-                    particles.push(new Particle(this.x, this.y, this.color));
+                    particles.push(new Particle(this.x, this.y, this.color, this.size));
                 }
             }
         }
@@ -30,7 +31,7 @@ window.onload = function() {
         draw() {
             if (this.age < this.maxAge) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
             }
@@ -38,13 +39,13 @@ window.onload = function() {
     }
 
     class Particle {
-        constructor(x, y, color) {
+        constructor(x, y, color, size) {
             this.x = x;
             this.y = y;
             this.age = 0;
             this.maxAge = 100;
-            this.velocityX = (Math.random() - 0.5) * 6;
-            this.velocityY = (Math.random() - 0.5) * 6;
+            this.velocityX = (Math.random() - 0.5) * 6 * size;
+            this.velocityY = (Math.random() - 0.5) * 6 * size;
             this.color = color;
         }
 
@@ -74,11 +75,19 @@ window.onload = function() {
         requestAnimationFrame(loop);
     }
 
+    // 超大的烟花
+    setTimeout(() => {
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        fireworks.push(new Firework(x, y, 3, true));
+    }, 500);
+
+    // 定时器，生成小的烟花
     setInterval(() => {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height / 2;
-        fireworks.push(new Firework(x, y));
-    }, 500);
+        fireworks.push(new Firework(x, y, 1, false));
+    }, 1000);
 
     loop();
 }
