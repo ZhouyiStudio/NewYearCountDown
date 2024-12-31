@@ -14,10 +14,12 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
+            flex-direction: column;
         }
         .countdown {
             display: flex;
             gap: 20px;
+            margin-top: 20px;
         }
         .flip-card {
             perspective: 1000px;
@@ -54,6 +56,7 @@
     </style>
 </head>
 <body>
+    <h1>距离新年还有：</h1>
     <div class="countdown">
         <div class="flip-card" id="days">
             <div class="flip-card-inner">
